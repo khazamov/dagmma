@@ -1,0 +1,61 @@
+<html>
+<head>
+<style>
+div.formy {
+	
+	padding-top: 20px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+
+
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script charset="utf-8" src="//ucarecdn.com/widget/2.10.1/uploadcare/uploadcare.full.min.js"></script>
+
+  <script>
+    UPLOADCARE_LOCALE = 'ru'
+    UPLOADCARE_PUBLIC_KEY = "dddc66243e5fad63afba";
+    $(document).ready(function() {
+    	singleWidget = uploadcare.Widget('[role="uploadcare-uploader"]');
+    	singleWidget.onUploadComplete(function(fileInfo) {
+                 console.log('fire on upload');
+ 		        // catch the form's submit event
+
+		            $.ajax({ // create an AJAX call...
+		                data: $('#stumpyform').serialize(), // get the form data
+		                type: $('#stumpyform').attr('method'), // GET or POST
+		                url: $('#stumpyform').attr('action'), // the file to call
+		                success: function(response) { // on success..
+		                    $('#picholder').attr('src',response); // update the DIV
+		                }
+		            });
+		            return false;
+		        
+    });
+});
+  </script>
+  
+
+
+
+</head>
+
+<body>
+
+<div class="formy" >
+ 
+<form action="index" method="post" id="stumpyform">
+  {% csrf_token %}
+    {{ form }} 
+</form>
+</div>
+
+<div >
+<img id="picholder" src="{{ imgsrc }}" />
+</div>
+
+</body>
+
+</html>
